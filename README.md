@@ -199,7 +199,7 @@ I created some demo project, which shows you how to use `IPAPatch`:
 	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
+## 本项目改编于https://github.com/Naituw/IPAPatch，站在巨人的肩膀上学习。
 ## 本工程已集成reavel 20的framework，直接运行即可添加。
 ## 本工程集成了FLEX.framework，运行后即可动态调试
 ## 本工程集成了常见的反调试方法，如ptrace，syscall，sysctl，isatty，并且hook了exit方法，让程序不退出
