@@ -199,12 +199,12 @@ I created some demo project, which shows you how to use `IPAPatch`:
 	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-## 本项目改编于https://github.com/Naituw/IPAPatch，站在巨人的肩膀上学习。
-## 本工程已集成reavel 20的framework，直接运行即可添加。
+## 本项目改编于https://github.com/Naituw/IPAPatch  站在巨人的肩膀上学习。
+## 本工程已集成Reavel 20的framework，直接运行即可添加。
 ## 本工程集成了FLEX.framework，运行后即可动态调试
-## 本工程集成了常见的反调试方法，如ptrace，syscall，sysctl，isatty，并且hook了exit方法，让程序不退出
+## 本工程集成了常见的反调试方法的绕过，如ptrace，syscall，sysctl，isatty，并且hook了exit方法，让程序不退出
 ## 本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数，使用方法见IPAPatchEntry.m
-
-### 使用方法：将砸壳后的ipa包放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID。
+## 使用方法：将砸壳后的ipa包放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID。
+## 要学习更多逆向知识，请看https://blog.csdn.net/youshaoduo/article/category/6819381
 
 
