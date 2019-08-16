@@ -12,7 +12,7 @@
 #import <Security/Security.h>
 #import <mach-o/dyld.h>
 
-@class HXURLExtendsParameters;
+@class AFSecurityPolicy;
 
 @implementation IPAPatchEntry
 
@@ -34,9 +34,61 @@ void checkDylibs(void)
         SEL sel2 = NSSelectorFromString(@"showExplorer");
         [obj performSelector:sel2 withObject:nil];
     });
-    [self exchangeNSString];
+//    [self exchangeNSString];
 //    bgl_exchangeMethod([NSString class], @selector(stringByAppendingString:), [IPAPatchEntry class], @selector(myStringByAppendingString:),  @selector(stringByAppendingString:));
+//    bgl_exchangeMethod([NSMutableString class], @selector(appendString:), [IPAPatchEntry class], @selector(myMutableStringAppendString:), @selector(appendString:));
+    bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), @selector(setSSLPinningMode:), [IPAPatchEntry class], @selector(sslPinningMode:), @selector(setSSLPinningMode:));
+    bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), @selector(setAllowInvalidCertificates:), [IPAPatchEntry class], @selector(allowInvalid:), @selector(setAllowInvalidCertificates:));
+    bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), @selector(setValidatesDomainName:), [IPAPatchEntry class], @selector(validatesDomainName:), @selector(setValidatesDomainName:));
 }
+
+- (void)allowInvalid:(BOOL)v {
+    [self allowInvalid:YES];
+}
+
+- (void)validatesDomainName:(BOOL)y {
+    [self validatesDomainName:NO];
+}
+
+- (void)sslPinningMode:(NSUInteger)mode {
+    [self sslPinningMode:0];
+}
+
++ (NSData *)dataForHexString:(NSString *)hexString {
+    if (hexString == nil) {
+        return nil;
+    }
+    const char* ch = [[hexString lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
+    NSMutableData* data = [NSMutableData data];
+    while (*ch) {
+        if (*ch == ' ') {
+            continue;
+        }
+        char byte = 0;
+        if ('0' <= *ch && *ch <= '9') {
+            byte = *ch - '0';
+        }else if ('a' <= *ch && *ch <= 'f') {
+            byte = *ch - 'a' + 10;
+        }else if ('A' <= *ch && *ch <= 'F') {
+            byte = *ch - 'A' + 10;
+        }
+        ch++;
+        byte = byte << 4;
+        if (*ch) {
+            if ('0' <= *ch && *ch <= '9') {
+                byte += *ch - '0';
+            } else if ('a' <= *ch && *ch <= 'f') {
+                byte += *ch - 'a' + 10;
+            }else if('A' <= *ch && *ch <= 'F'){
+                byte += *ch - 'A' + 10;
+            }
+            ch++;
+        }
+        [data appendBytes:&byte length:1];
+    }
+    return data;
+}
+
 
 + (void)exchangeNSString {
     SEL sel1 = @selector(stringWithFormat:);
@@ -58,11 +110,16 @@ void checkDylibs(void)
 
 - (NSString *)myStringByAppendingString:(NSString *)str {
     NSString * result = [self myStringByAppendingString:str];
-    NSLog(@"myStringByAppendingString: %@", result);
+    NSLog(@"$$$: %@", result);
     return result;
 }
 
-
+- (NSMutableString *)myMutableStringAppendString:(NSString *)str {
+    NSMutableString * result = [[NSMutableString alloc] init];
+    result = [self myMutableStringAppendString:str];
+    NSLog(@"###: %@", result);
+    return result;
+}
 
 + (void)for_example_showAlert
 {
@@ -126,7 +183,7 @@ static void bgl_exchangeMethod(Class originalClass, SEL originalSel, Class repla
         const char *memberAddress = ivar_getName(var);
         const char *memberType = ivar_getTypeEncoding(var);
         [a setValue:[NSString stringWithUTF8String:memberType] forKey:[NSString stringWithUTF8String:memberAddress]];
-        NSLog(@"%s  %s", memberAddress, memberType);
+        NSLog(@"IvarList: %s  %s", memberAddress, memberType);
     }
     return a;
 }
@@ -160,6 +217,7 @@ static void bgl_exchangeMethod(Class originalClass, SEL originalSel, Class repla
         }
     }
     free(properties);
+    NSLog(@"AllPropertiesAndVaules: %@", propsDic);
     return propsDic;
 }
 
@@ -617,6 +675,52 @@ static NSData *base64_decode(NSString *str){
     free(outbuf);
     CFRelease(keyRef);
     return ret;
+}
+
+@end
+
+static SaveModel * instance = nil;
+@interface SaveModel ()
+@property (nonatomic, copy) NSMutableArray * save;
+@end
+@implementation SaveModel
+
++ (instancetype)shared {
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        if (instance == nil) {
+            instance = [super alloc];
+            instance = [instance init];
+        }
+    });
+    return instance;
+}
+
++ (id)allocWithZone:(struct _NSZone *)zone{
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        instance = [super allocWithZone:zone];
+    });
+    return instance;
+}
+
+- (id)copyWithZone:(NSZone *)zone{
+    return self;
+}
+
+- (NSMutableArray *)getSave {
+    return _save;
+}
+
+- (void)saveStr:(NSString *)str {
+    if (!_save) {
+        _save = [[NSMutableArray alloc] init];
+    }
+    [_save addObject:str];
+}
+
+- (void)clean {
+//    [_save removeAllObjects];
 }
 
 @end

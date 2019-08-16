@@ -11,3 +11,13 @@
 @interface IPAPatchEntry : NSObject
 
 @end
+
+@interface SaveModel : NSObject
++ (instancetype)shared;
+
+- (NSMutableArray *)getSave;
+
+- (void)saveStr:(NSString *)str;
+
+- (void)clean;
+@end

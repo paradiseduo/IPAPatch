@@ -12,6 +12,8 @@
 #import <sys/sysctl.h>
 #import <sys/syscall.h>
 #include <mach-o/dyld.h>
+#import <sys/termios.h>
+#import <sys/ioctl.h>
 
 #if !defined(PT_DENY_ATTACH)
 #define PT_DENY_ATTACH 31
@@ -101,7 +103,6 @@ static void disable_sysctl_debugger_checking()
 }
 
 // Bypassing isatty debugger checking technique
-#import <sys/termios.h>
 static int (*orig_isatty)(int);
 
 int fake_isatty(int number) {
@@ -178,6 +179,22 @@ static void disable_exit() {
     rebind_symbols((struct rebinding[1]){{"exit", fake_exit}}, 1);
 }
 
+// Bypassing ioctl debugger checking technique
+static int (*orig_ioctl)(int, unsigned long, ...);
+int fake_ioctl(int fd, unsigned long cmd, ...) {
+    int x = orig_ioctl(fd, cmd);
+    if (!x && TIOCGWINSZ == cmd) {
+        NSLog(@"[AntiDebugBypass] catch ioctl and bypass.");
+        return -1;
+    }
+    return x;
+}
+
+static void disable_ioctl() {
+    orig_ioctl = dlsym(RTLD_NEXT, "ioctl");
+    rebind_symbols((struct rebinding[1]){{"ioctl", fake_ioctl}}, 1);
+}
+
 
 @implementation IPAPatchBypassAntiDebugging
 
@@ -189,6 +206,7 @@ static void disable_exit() {
         disable_sysctl_debugger_checking();
         disable_syscall_debugger_checking();
         disable_isatty_debugger_checking();
+//        disable_ioctl();
     }
 }
 
