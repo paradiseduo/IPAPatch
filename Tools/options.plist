@@ -6,5 +6,7 @@
 	<false/>
 	<key>CREATE_IPA_FILE</key>
 	<false/>
+	<key>IGNORE_UI_SUPPORTED_DEVICES</key>
+	<false/>
 </dict>
 </plist>

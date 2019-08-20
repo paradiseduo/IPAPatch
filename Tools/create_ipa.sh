@@ -31,4 +31,3 @@ if [ "$CREATE_IPA_FILE" = true ]; then
     rm -rf "$IPA_PRODUCT_PAYLOAD_PATH"
 
 fi
-
