@@ -34,12 +34,42 @@ void checkDylibs(void)
         SEL sel2 = NSSelectorFromString(@"showExplorer");
         [obj performSelector:sel2 withObject:nil];
     });
-//    [self exchangeNSString];
-//    bgl_exchangeMethod([NSString class], @selector(stringByAppendingString:), [IPAPatchEntry class], @selector(myStringByAppendingString:),  @selector(stringByAppendingString:));
-//    bgl_exchangeMethod([NSMutableString class], @selector(appendString:), [IPAPatchEntry class], @selector(myMutableStringAppendString:), @selector(appendString:));
+    //    [self exchangeHmacService];
+    //    [self exchangeNSString];
+    //    bgl_exchangeMethod([NSString class], @selector(stringByAppendingString:), [IPAPatchEntry class], @selector(myStringByAppendingString:),  @selector(stringByAppendingString:));
+    //    bgl_exchangeMethod([NSMutableString class], @selector(appendString:), [IPAPatchEntry class], @selector(myMutableStringAppendString:), @selector(appendString:));
+    
+    
+    [self passHTTPS2];
+    
+}
+
++ (void)passHTTPS1 {
+    /**
+            方案1，如果该方案不好使，那么请使用方案2
+         */
     bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), @selector(setSSLPinningMode:), [IPAPatchEntry class], @selector(sslPinningMode:), @selector(setSSLPinningMode:));
     bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), @selector(setAllowInvalidCertificates:), [IPAPatchEntry class], @selector(allowInvalid:), @selector(setAllowInvalidCertificates:));
     bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), @selector(setValidatesDomainName:), [IPAPatchEntry class], @selector(validatesDomainName:), @selector(setValidatesDomainName:));
+}
+
++ (void)passHTTPS2 {
+    /**
+        方案2，如果该方案不好使，那么请使用方案1
+     */
+    bgl_exchangeMethod(NSClassFromString(@"AFHTTPSessionManager"), @selector(setSecurityPolicy:), [IPAPatchEntry class], @selector(securityPolicy:), @selector(setSecurityPolicy:));
+}
+
+- (void)securityPolicy:(id)policy {
+    Class a = NSClassFromString(@"AFSecurityPolicy");
+    SEL sel1 = NSSelectorFromString(@"defaultPolicy");
+    id securityPolicy = [a performSelector:sel1];
+    SEL sel2 = NSSelectorFromString(@"setAllowInvalidCertificates:");
+    [securityPolicy performSelector:sel2 withObject:[NSNumber numberWithBool:YES]];
+    SEL sel3 = NSSelectorFromString(@"setValidatesDomainName:");
+    [securityPolicy performSelector:sel3 withObject:[NSNumber numberWithBool:NO]];
+    
+    [self securityPolicy:securityPolicy];
 }
 
 - (void)allowInvalid:(BOOL)v {
