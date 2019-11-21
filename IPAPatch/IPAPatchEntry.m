@@ -33,15 +33,18 @@ void checkDylibs(void)
         id obj = [a performSelector:sel1 withObject:nil];
         SEL sel2 = NSSelectorFromString(@"showExplorer");
         [obj performSelector:sel2 withObject:nil];
+        
+        bgl_exchangeMethod([NSBundle class], @selector(bundleIdentifier), [IPAPatchEntry class], @selector(hisBundleID), @selector(bundleIdentifier));
     });
-    //    [self exchangeHmacService];
-    //    [self exchangeNSString];
+//        [self exchangeNSString];
     //    bgl_exchangeMethod([NSString class], @selector(stringByAppendingString:), [IPAPatchEntry class], @selector(myStringByAppendingString:),  @selector(stringByAppendingString:));
     //    bgl_exchangeMethod([NSMutableString class], @selector(appendString:), [IPAPatchEntry class], @selector(myMutableStringAppendString:), @selector(appendString:));
+//    [self passHTTPS2];
     
-    
-    [self passHTTPS2];
-    
+}
+
+- (NSString *)hisBundleID {
+    return @"com.ysd.resign.one";
 }
 
 + (void)passHTTPS1 {
