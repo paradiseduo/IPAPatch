@@ -32,6 +32,8 @@
 		C6B263281E7BC9DF009B4DEA /* IPAPatchEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B263261E7BC9DF009B4DEA /* IPAPatchEntry.m */; };
 		C6B2634D1E7BCB31009B4DEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B2634C1E7BCB31009B4DEA /* main.m */; };
 		C6B263501E7BCB31009B4DEA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C6B2634F1E7BCB31009B4DEA /* AppDelegate.m */; };
+		E8243A0D23ACBF5B0077E34F /* CustomURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = E8243A0B23ACBF5B0077E34F /* CustomURLProtocol.h */; };
+		E8243A0F23ACBF5B0077E34F /* CustomURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E8243A0C23ACBF5B0077E34F /* CustomURLProtocol.m */; };
 		E8BA730621DC994E006C76D3 /* hookzz.h in Headers */ = {isa = PBXBuildFile; fileRef = E8BA730521DC994E006C76D3 /* hookzz.h */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +74,8 @@
 		C6B2635C1E7BCB31009B4DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6B263621E7BCD03009B4DEA /* patch.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = patch.sh; sourceTree = "<group>"; };
 		C6DDBB621F5146AD00A42BE2 /* create_ipa.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = create_ipa.sh; sourceTree = "<group>"; };
+		E8243A0B23ACBF5B0077E34F /* CustomURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomURLProtocol.h; sourceTree = "<group>"; };
+		E8243A0C23ACBF5B0077E34F /* CustomURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomURLProtocol.m; sourceTree = "<group>"; };
 		E8BA730521DC994E006C76D3 /* hookzz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookzz.h; sourceTree = "<group>"; };
 		E8BA730B21DC9A2A006C76D3 /* libhookzz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libhookzz.dylib; path = Assets/Dylibs/libhookzz.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +144,8 @@
 				E8BA730521DC994E006C76D3 /* hookzz.h */,
 				C6B263251E7BC9DF009B4DEA /* IPAPatchEntry.h */,
 				C6B263261E7BC9DF009B4DEA /* IPAPatchEntry.m */,
+				E8243A0B23ACBF5B0077E34F /* CustomURLProtocol.h */,
+				E8243A0C23ACBF5B0077E34F /* CustomURLProtocol.m */,
 				C63AC1A81E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h */,
 				C63AC1A91E8392210094B1C5 /* IPAPatchBypassAntiDebugging.m */,
 			);
@@ -192,6 +198,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8243A0D23ACBF5B0077E34F /* CustomURLProtocol.h in Headers */,
 				C6B263271E7BC9DF009B4DEA /* IPAPatchEntry.h in Headers */,
 				C63AC1A61E838BB70094B1C5 /* fishhook.h in Headers */,
 				C63AC1AA1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h in Headers */,
@@ -255,7 +262,7 @@
 					};
 					C6B263481E7BCB31009B4DEA = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = HRTKN7NJBD;
+						DevelopmentTeam = CZ6TZMJ6X7;
 						ProvisioningStyle = Automatic;
 					};
 					C6DDBB5C1F51468D00A42BE2 = {
@@ -269,6 +276,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -338,6 +346,7 @@
 			files = (
 				C63AC1AB1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.m in Sources */,
 				C6B263281E7BC9DF009B4DEA /* IPAPatchEntry.m in Sources */,
+				E8243A0F23ACBF5B0077E34F /* CustomURLProtocol.m in Sources */,
 				C63AC1A51E838BB70094B1C5 /* fishhook.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,7 +538,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HRTKN7NJBD;
+				DEVELOPMENT_TEAM = CZ6TZMJ6X7;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -547,7 +556,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ysd.resign;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ysd.resign.one;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -562,7 +571,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HRTKN7NJBD;
+				DEVELOPMENT_TEAM = CZ6TZMJ6X7;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -576,7 +585,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ysd.resign;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ysd.resign.one;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

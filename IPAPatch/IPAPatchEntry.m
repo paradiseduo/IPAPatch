@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <Security/Security.h>
 #import <mach-o/dyld.h>
+#import "CustomURLProtocol.h"
 
 @class AFSecurityPolicy;
 
@@ -28,6 +29,7 @@ void checkDylibs(void)
 + (void)load
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //使用passHTTPS3时请注释掉下面5行代码，FLEX抓端口的原理跟passHTTPS3的原理一样，因此代码会出现冲突（NSURLProtocol只能存在一个）。
         Class a = NSClassFromString(@"FLEXManager");
         SEL sel1 = NSSelectorFromString(@"sharedManager");
         id obj = [a performSelector:sel1 withObject:nil];
@@ -39,8 +41,7 @@ void checkDylibs(void)
 //        [self exchangeNSString];
     //    bgl_exchangeMethod([NSString class], @selector(stringByAppendingString:), [IPAPatchEntry class], @selector(myStringByAppendingString:),  @selector(stringByAppendingString:));
     //    bgl_exchangeMethod([NSMutableString class], @selector(appendString:), [IPAPatchEntry class], @selector(myMutableStringAppendString:), @selector(appendString:));
-//    [self passHTTPS2];
-    
+//    [self passHTTPS3];
 }
 
 - (NSString *)hisBundleID {
@@ -61,6 +62,15 @@ void checkDylibs(void)
         方案2，如果该方案不好使，那么请使用方案1
      */
     bgl_exchangeMethod(NSClassFromString(@"AFHTTPSessionManager"), @selector(setSecurityPolicy:), [IPAPatchEntry class], @selector(securityPolicy:), @selector(setSecurityPolicy:));
+}
+
++ (void)passHTTPS3 {
+    /**
+       方案3，如果该方案1/2不好使，那么请使用方案3
+    */
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        [NSURLProtocol registerClass:[CustomURLProtocol class]];
+    }];
 }
 
 - (void)securityPolicy:(id)policy {
