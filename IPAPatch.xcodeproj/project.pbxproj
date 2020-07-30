@@ -55,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BE10717624C9A9A1009C3CEF /* IPAPatch-DummyApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "IPAPatch-DummyApp.entitlements"; sourceTree = "<group>"; };
 		C63AC1A21E838BB70094B1C5 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
 		C63AC1A31E838BB70094B1C5 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
 		C63AC1A41E838BB70094B1C5 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -165,6 +166,7 @@
 		C6B2634A1E7BCB31009B4DEA /* IPAPatch-DummyApp */ = {
 			isa = PBXGroup;
 			children = (
+				BE10717624C9A9A1009C3CEF /* IPAPatch-DummyApp.entitlements */,
 				C6B2634E1E7BCB31009B4DEA /* AppDelegate.h */,
 				C6B2634F1E7BCB31009B4DEA /* AppDelegate.m */,
 				C64288381E7BF9E900C0BBB0 /* ProjectConfigurationWarning.hpp */,
@@ -335,7 +337,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Tools/create_ipa.sh\"";
+			shellScript = "\"${SRCROOT}/Tools/create_ipa.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -479,6 +481,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = HRTKN7NJBD;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -498,9 +501,11 @@
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wutian.IPAPatch;
+				PRODUCT_BUNDLE_IDENTIFIER = ysd.gemd.iting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -508,6 +513,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = HRTKN7NJBD;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -526,9 +532,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wutian.IPAPatch;
+				PRODUCT_BUNDLE_IDENTIFIER = ysd.gemd.iting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -536,6 +544,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CODE_SIGN_ENTITLEMENTS = "IPAPatch-DummyApp/IPAPatch-DummyApp.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CZ6TZMJ6X7;
@@ -556,7 +565,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ysd.resign.one;
+				PRODUCT_BUNDLE_IDENTIFIER = ysd.gemd.iting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -569,6 +578,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CODE_SIGN_ENTITLEMENTS = "IPAPatch-DummyApp/IPAPatch-DummyApp.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CZ6TZMJ6X7;
@@ -585,7 +595,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ysd.resign.one;
+				PRODUCT_BUNDLE_IDENTIFIER = ysd.gemd.iting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

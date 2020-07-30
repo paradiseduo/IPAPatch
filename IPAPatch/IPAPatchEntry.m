@@ -7,11 +7,14 @@
 //
 
 #import "IPAPatchEntry.h"
+#import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import <UIKit/UIKit.h>
 #import <Security/Security.h>
 #import <mach-o/dyld.h>
 #import "CustomURLProtocol.h"
+
+#define BUNDLEID @"com.gemd.iting"
 
 @class AFSecurityPolicy;
 
@@ -38,14 +41,14 @@ void checkDylibs(void)
         
         bgl_exchangeMethod([NSBundle class], @selector(bundleIdentifier), [IPAPatchEntry class], @selector(hisBundleID), @selector(bundleIdentifier));
     });
-//        [self exchangeNSString];
-    //    bgl_exchangeMethod([NSString class], @selector(stringByAppendingString:), [IPAPatchEntry class], @selector(myStringByAppendingString:),  @selector(stringByAppendingString:));
-    //    bgl_exchangeMethod([NSMutableString class], @selector(appendString:), [IPAPatchEntry class], @selector(myMutableStringAppendString:), @selector(appendString:));
-//    [self passHTTPS3];
+//    [self exchangeNSString];
+//    bgl_exchangeMethod([NSString class], @selector(stringByAppendingString:), [IPAPatchEntry class], @selector(myStringByAppendingString:),  @selector(stringByAppendingString:));
+//    bgl_exchangeMethod([NSMutableString class], @selector(appendString:), [IPAPatchEntry class], @selector(myMutableStringAppendString:), @selector(appendString:));
+    [self passHTTPS1];
 }
 
 - (NSString *)hisBundleID {
-    return @"com.ysd.resign.one";
+    return BUNDLEID;
 }
 
 + (void)passHTTPS1 {
@@ -95,6 +98,55 @@ void checkDylibs(void)
 
 - (void)sslPinningMode:(NSUInteger)mode {
     [self sslPinningMode:0];
+}
+
++ (void)exchangesimpleDeEncryptKey2 {
+    SEL sel1 = @selector(xmajax_simpleDeEncryptKey:);
+    Method a = class_getClassMethod([NSString class], sel1);
+
+    SEL sel2 = @selector(s_xmajax_simpleDeEncryptKey:);
+    Method b = class_getClassMethod([IPAPatchEntry class], sel2);
+
+    method_exchangeImplementations(a, b);
+}
+
++ (id)s_xmajax_simpleDeEncryptKey:(NSString *)key {
+    return [IPAPatchEntry s_xmajax_simpleDeEncryptKey:key];
+}
+
++ (void)exchangesimpleDeEncryptKey1 {
+    SEL sel1 = @selector(simpleDeEncryptKey:);
+    Method a = class_getClassMethod([NSString class], sel1);
+
+    SEL sel2 = @selector(s_simpleDeEncryptKey:);
+    Method b = class_getClassMethod([IPAPatchEntry class], sel2);
+
+    method_exchangeImplementations(a, b);
+}
+
++ (id)s_simpleDeEncryptKey:(NSString *)key {
+    NSLog(@"=====================");
+    NSLog(@"%@", key);
+    NSLog(@"=====================");
+    return [IPAPatchEntry s_simpleDeEncryptKey:key];
+}
+
++ (void)exchangeMd5 {
+    SEL sel1 = @selector(getMd5SignatureWithParamDict:encryptedKey:options:);
+    Method a = class_getClassMethod(NSClassFromString(@"XMCipher"), sel1);
+
+    SEL sel2 = @selector(s_getMd5SignatureWithParamDict:encryptedKey:options:);
+    Method b = class_getClassMethod([IPAPatchEntry class], sel2);
+
+    method_exchangeImplementations(a, b);
+}
+
++ (id)s_getMd5SignatureWithParamDict:(id)dic encryptedKey:(NSString *)key options:(id)op {
+    NSLog(@"=====================");
+    NSLog(@"%@", dic);
+    NSLog(@"%@", key);
+    NSLog(@"=====================");
+    return [IPAPatchEntry s_getMd5SignatureWithParamDict:dic encryptedKey:key options:op];
 }
 
 + (NSData *)dataForHexString:(NSString *)hexString {

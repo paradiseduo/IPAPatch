@@ -3,7 +3,7 @@
 //  Flipboard
 //
 //  Created by Ryan Olson on 2014-05-02.
-//  Copyright (c) 2014 Flipboard. All rights reserved.
+//  Copyright (c) 2020 Flipboard. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,7 +13,7 @@
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
 @property (nonatomic) NSInteger viewDepth;
-@property (nonatomic) UIColor *viewColor;
-@property (nonatomic) UIView *viewBackgroundColorView;
+@property (nonatomic) UIColor *randomColorTag;
+@property (nonatomic) UIColor *indicatedViewColor;
 
 @end

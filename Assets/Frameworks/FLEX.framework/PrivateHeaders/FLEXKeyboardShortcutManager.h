@@ -8,17 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-#if TARGET_OS_SIMULATOR
-
 @interface FLEXKeyboardShortcutManager : NSObject
 
-+ (instancetype)sharedManager;
+@property (nonatomic, readonly, class) FLEXKeyboardShortcutManager *sharedManager;
 
-- (void)registerSimulatorShortcutWithKey:(NSString *)key modifiers:(UIKeyModifierFlags)modifiers action:(dispatch_block_t)action description:(NSString *)description;
-- (NSString *)keyboardShortcutsDescription;
+/// @param key A single character string matching a key on the keyboard
+/// @param modifiers Modifier keys such as shift, command, or alt/option
+/// @param action The block to run on the main thread when the key & modifier combination is recognized.
+/// @param description Shown the the keyboard shortcut help menu, which is accessed via the '?' key.
+/// @param allowOverride Allow registering even if there's an existing action associated with that key/modifier.
+- (void)registerSimulatorShortcutWithKey:(NSString *)key
+                               modifiers:(UIKeyModifierFlags)modifiers
+                                  action:(dispatch_block_t)action
+                             description:(NSString *)description
+                           allowOverride:(BOOL)allowOverride;
 
 @property (nonatomic, getter=isEnabled) BOOL enabled;
+@property (nonatomic, readonly) NSString *keyboardShortcutsDescription;
 
 @end
-
-#endif
