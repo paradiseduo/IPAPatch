@@ -100,55 +100,6 @@ void checkDylibs(void)
     [self sslPinningMode:0];
 }
 
-+ (void)exchangesimpleDeEncryptKey2 {
-    SEL sel1 = @selector(xmajax_simpleDeEncryptKey:);
-    Method a = class_getClassMethod([NSString class], sel1);
-
-    SEL sel2 = @selector(s_xmajax_simpleDeEncryptKey:);
-    Method b = class_getClassMethod([IPAPatchEntry class], sel2);
-
-    method_exchangeImplementations(a, b);
-}
-
-+ (id)s_xmajax_simpleDeEncryptKey:(NSString *)key {
-    return [IPAPatchEntry s_xmajax_simpleDeEncryptKey:key];
-}
-
-+ (void)exchangesimpleDeEncryptKey1 {
-    SEL sel1 = @selector(simpleDeEncryptKey:);
-    Method a = class_getClassMethod([NSString class], sel1);
-
-    SEL sel2 = @selector(s_simpleDeEncryptKey:);
-    Method b = class_getClassMethod([IPAPatchEntry class], sel2);
-
-    method_exchangeImplementations(a, b);
-}
-
-+ (id)s_simpleDeEncryptKey:(NSString *)key {
-    NSLog(@"=====================");
-    NSLog(@"%@", key);
-    NSLog(@"=====================");
-    return [IPAPatchEntry s_simpleDeEncryptKey:key];
-}
-
-+ (void)exchangeMd5 {
-    SEL sel1 = @selector(getMd5SignatureWithParamDict:encryptedKey:options:);
-    Method a = class_getClassMethod(NSClassFromString(@"XMCipher"), sel1);
-
-    SEL sel2 = @selector(s_getMd5SignatureWithParamDict:encryptedKey:options:);
-    Method b = class_getClassMethod([IPAPatchEntry class], sel2);
-
-    method_exchangeImplementations(a, b);
-}
-
-+ (id)s_getMd5SignatureWithParamDict:(id)dic encryptedKey:(NSString *)key options:(id)op {
-    NSLog(@"=====================");
-    NSLog(@"%@", dic);
-    NSLog(@"%@", key);
-    NSLog(@"=====================");
-    return [IPAPatchEntry s_getMd5SignatureWithParamDict:dic encryptedKey:key options:op];
-}
-
 + (NSData *)dataForHexString:(NSString *)hexString {
     if (hexString == nil) {
         return nil;
