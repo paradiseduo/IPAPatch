@@ -29,6 +29,46 @@ void checkDylibs(void)
     }
 }
 
++ (UIViewController *)getCurrentViewController {
+    UIViewController * result = [[UIViewController alloc] init];
+    UIWindow * window = [UIApplication sharedApplication].keyWindow;
+    if (window.windowLevel != UIWindowLevelNormal) {
+        NSArray * windows = [UIApplication sharedApplication].windows;
+        for (UIWindow * temp in windows) {
+            if (temp.windowLevel == UIWindowLevelNormal) {
+                window = temp;
+                break;
+            }
+        }
+    }
+    
+    UIViewController * rootVC = window.rootViewController;
+    if (rootVC) {
+        UIView * frontView = window.subviews.firstObject;
+        if (frontView) {
+            UIResponder * nextResponder = frontView.nextResponder;
+            if (rootVC.presentedViewController) {
+                nextResponder = rootVC.presentedViewController;
+            }
+            if ([nextResponder isKindOfClass:[UITabBarController class]]) {
+                UITabBarController * tabbar = (UITabBarController *)nextResponder;
+                UINavigationController * nav = (UINavigationController *)tabbar.viewControllers[tabbar.selectedIndex];
+                result = nav.childViewControllers.lastObject;
+            }else if ([nextResponder isKindOfClass:[UINavigationController class]]) {
+                UINavigationController * nav = (UINavigationController *)nextResponder;
+                result = nav.childViewControllers.lastObject;
+            }else {
+                if ([nextResponder isKindOfClass:[UIView class]]) {
+                    
+                }else {
+                    result = (UIViewController *)nextResponder;
+                }
+            }
+        }
+    }
+    return result;
+}
+
 + (void)load
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
