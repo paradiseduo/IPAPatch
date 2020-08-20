@@ -22,6 +22,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		BE47177524E3936800A77647 /* SaveModel.h in Headers */ = {isa = PBXBuildFile; fileRef = BE47177324E3936800A77647 /* SaveModel.h */; };
+		BE47177624E3936800A77647 /* SaveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE47177424E3936800A77647 /* SaveModel.m */; };
+		BE47177924E393E000A77647 /* Tools.h in Headers */ = {isa = PBXBuildFile; fileRef = BE47177724E393E000A77647 /* Tools.h */; };
+		BE47177A24E393E000A77647 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = BE47177824E393E000A77647 /* Tools.m */; };
 		C63AC1A51E838BB70094B1C5 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = C63AC1A21E838BB70094B1C5 /* fishhook.c */; };
 		C63AC1A61E838BB70094B1C5 /* fishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = C63AC1A31E838BB70094B1C5 /* fishhook.h */; };
 		C63AC1AA1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h in Headers */ = {isa = PBXBuildFile; fileRef = C63AC1A81E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h */; };
@@ -56,6 +60,10 @@
 
 /* Begin PBXFileReference section */
 		BE10717624C9A9A1009C3CEF /* IPAPatch-DummyApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "IPAPatch-DummyApp.entitlements"; sourceTree = "<group>"; };
+		BE47177324E3936800A77647 /* SaveModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveModel.h; sourceTree = "<group>"; };
+		BE47177424E3936800A77647 /* SaveModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveModel.m; sourceTree = "<group>"; };
+		BE47177724E393E000A77647 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
+		BE47177824E393E000A77647 /* Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		C63AC1A21E838BB70094B1C5 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
 		C63AC1A31E838BB70094B1C5 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
 		C63AC1A41E838BB70094B1C5 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -145,6 +153,10 @@
 				E8BA730521DC994E006C76D3 /* hookzz.h */,
 				C6B263251E7BC9DF009B4DEA /* IPAPatchEntry.h */,
 				C6B263261E7BC9DF009B4DEA /* IPAPatchEntry.m */,
+				BE47177724E393E000A77647 /* Tools.h */,
+				BE47177824E393E000A77647 /* Tools.m */,
+				BE47177324E3936800A77647 /* SaveModel.h */,
+				BE47177424E3936800A77647 /* SaveModel.m */,
 				E8243A0B23ACBF5B0077E34F /* CustomURLProtocol.h */,
 				E8243A0C23ACBF5B0077E34F /* CustomURLProtocol.m */,
 				C63AC1A81E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h */,
@@ -201,10 +213,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8243A0D23ACBF5B0077E34F /* CustomURLProtocol.h in Headers */,
+				BE47177524E3936800A77647 /* SaveModel.h in Headers */,
 				C6B263271E7BC9DF009B4DEA /* IPAPatchEntry.h in Headers */,
 				C63AC1A61E838BB70094B1C5 /* fishhook.h in Headers */,
 				C63AC1AA1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h in Headers */,
 				E8BA730621DC994E006C76D3 /* hookzz.h in Headers */,
+				BE47177924E393E000A77647 /* Tools.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +278,7 @@
 					};
 					C6B263481E7BCB31009B4DEA = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = CZ6TZMJ6X7;
+						DevelopmentTeam = HRTKN7NJBD;
 						ProvisioningStyle = Automatic;
 					};
 					C6DDBB5C1F51468D00A42BE2 = {
@@ -349,6 +363,8 @@
 				C63AC1AB1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.m in Sources */,
 				C6B263281E7BC9DF009B4DEA /* IPAPatchEntry.m in Sources */,
 				E8243A0F23ACBF5B0077E34F /* CustomURLProtocol.m in Sources */,
+				BE47177A24E393E000A77647 /* Tools.m in Sources */,
+				BE47177624E3936800A77647 /* SaveModel.m in Sources */,
 				C63AC1A51E838BB70094B1C5 /* fishhook.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,7 +563,7 @@
 				CODE_SIGN_ENTITLEMENTS = "IPAPatch-DummyApp/IPAPatch-DummyApp.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CZ6TZMJ6X7;
+				DEVELOPMENT_TEAM = HRTKN7NJBD;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -565,7 +581,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ysd.gemd.iting;
+				PRODUCT_BUNDLE_IDENTIFIER = "-11.GraphicsContext";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -581,7 +597,7 @@
 				CODE_SIGN_ENTITLEMENTS = "IPAPatch-DummyApp/IPAPatch-DummyApp.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CZ6TZMJ6X7;
+				DEVELOPMENT_TEAM = HRTKN7NJBD;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -595,7 +611,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Assets/Dylibs",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ysd.gemd.iting;
+				PRODUCT_BUNDLE_IDENTIFIER = "-11.GraphicsContext";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
