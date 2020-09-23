@@ -2,9 +2,19 @@
 
 IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 
-[ [Features](#features) &bull; [Instructions](#instructions) &bull; [Example](#example) &bull; [FAQ](#faq) &bull; [License](#license) ]
+[ [说明](#说明) &bull; [Features](#features) &bull; [Instructions](#instructions) &bull; [Example](#example) &bull; [FAQ](#faq) &bull; [License](#license) ]
 
-## Features（中文说明见文末）
+## 说明
+*  本项目改编于[Naituw IPAPatch] (https://github.com/Naituw/IPAPatch)站在巨人的肩膀上学习
+*  本工程已集成Reavel 20的framework，直接运行即可添加
+*  本工程集成了FLEX.framework，运行后即可动态调试
+*  本工程集成了常见的反调试方法的绕过，如ptrace，syscall，sysctl，isatty，并且hook了exit方法，让程序不退出
+*  本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数，使用方法见IPAPatchEntry.m
+*  使用方法：将砸壳后的ipa包重命名为app.ipa，然后放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID
+*  要学习更多逆向知识，请看[这里](https://blog.csdn.net/youshaoduo/article/category/6819381)
+
+
+## Features
 
 **IPAPatch** includes an template Xcode project, that provides following features:
 
@@ -88,9 +98,11 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
    
         | Name | Description | Default |
         | --- | --- | --- |
-        | RESTORE_SYMBOLS  | When `YES`, IPAPatch will try to restore symbol table from Mach-O for debugging propose (with tools from https://github.com/tobefuturer/restore-symbol, also thanks to @henrayluo and @dannion) | YES |
+        | RESTORE_SYMBOLS  | When `YES`, IPAPatch will try to restore symbol table from Mach-O for debugging propose (with tools from https://github.com/tobefuturer/restore-symbol, also thanks to @henrayluo and @dannion) | NO |
         | CREATE_IPA_FILE | When `YES`, IPAPatch will generate a ipa file on each build. Genrated file is located at `SRCROOT/Product` | NO |
         | IGNORE_UI_SUPPORTED_DEVICES | When `YES`, IPAPatch will delete `UISupportedDevices` from source app's `Info.plist` | NO |
+        | REMOVE_WATCHPLACEHOLDER | When `YES`, IPAPatch will remove `com.apple.WatchPlaceholder` folder from source app's bundle | YES |
+        | USE_ORIGINAL_ENTITLEMENTS | When `YES`, IPAPatch will use source app's entitlements to resign, you need to make sure your Provisioning Profile matches the entitlements, or you need to disable `AMFI` on target device | NO |
 
 7. **Code Your Patch**
 
@@ -198,13 +210,4 @@ I created some demo project, which shows you how to use `IPAPatch`:
 	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-## 本项目改编于https://github.com/Naituw/IPAPatch  站在巨人的肩膀上学习。
-## 本工程已集成Reavel 20的framework，直接运行即可添加。
-## 本工程集成了FLEX.framework，运行后即可动态调试
-## 本工程集成了常见的反调试方法的绕过，如ptrace，syscall，sysctl，isatty，并且hook了exit方法，让程序不退出
-## 本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数，使用方法见IPAPatchEntry.m
-## 使用方法：将砸壳后的ipa包重命名为app.ipa，然后放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID。
-## 要学习更多逆向知识，请看https://blog.csdn.net/youshaoduo/article/category/6819381
-
 
