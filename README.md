@@ -13,6 +13,9 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  使用方法：将砸壳后的ipa包重命名为app.ipa，然后放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID
 *  要学习更多逆向知识，请看[这里](https://blog.csdn.net/youshaoduo/article/category/6819381)
 
+## Star Trend
+![](https://starchart.cc/paradiseduo/IPAPatch)
+
 
 ## Features
 
