@@ -14,7 +14,7 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  要学习更多逆向知识，请看[这里](https://blog.csdn.net/youshaoduo/article/category/6819381)
 
 ## Star Trend
-![](https://starchart.cc/paradiseduo/IPAPatch)
+[![Stargazers over time](https://starchart.cc/paradiseduo/IPAPatch.svg)](https://starchart.cc/paradiseduo/IPAPatch)
 
 
 ## Features
