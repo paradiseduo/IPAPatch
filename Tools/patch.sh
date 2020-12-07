@@ -201,8 +201,12 @@ for file in `ls -1 "${DYLIBS_TO_INJECT_PATH}"`; do
     if [[ $file = "."* ]]; then
         continue
     fi
-
+    extension="${file##*.}"
     filename="${file%.*}"
+    if [ "$extension" == "dylib" ]
+    then
+        filename="${file%.*}"".dylib"
+    fi
    	cp "$DYLIBS_TO_INJECT_PATH/$filename" "$TARGET_APP_PATH/Dylibs/$filename"
 
     echo -n '     '
