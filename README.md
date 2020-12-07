@@ -5,7 +5,7 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 [ [说明](#说明) &bull; [Features](#features) &bull; [Instructions](#instructions) &bull; [Example](#example) &bull; [FAQ](#faq) &bull; [License](#license) ]
 
 ## 说明
-*  本项目改编于[Naituw IPAPatch](https://github.com/Naituw/IPAPatch)站在巨人的肩膀上学习
+*  本项目改编于[Naituw IPAPatch](https://github.com/Naituw/IPAPatch)，站在巨人的肩膀上学习
 *  本工程已集成Reavel 20的framework，直接运行即可添加
 *  本工程集成了FLEX.framework，运行后即可动态调试
 *  本工程集成了hookzz框架，使用方法请咨询查阅
