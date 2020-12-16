@@ -13,6 +13,7 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  本工程集成了常见的反调试方法的绕过，如ptrace，syscall，sysctl，isatty等（IPAPatchBypassAntiDebugging.m）
 *  本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数（Tools.m）
 *  使用方法：将砸壳后的ipa包重命名为app.ipa，然后放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID
+*  代替class-dump的新方案[dsdump](https://github.com/paradiseduo/dsdump)
 *  要学习更多逆向知识，请看[这里](https://blog.csdn.net/youshaoduo/article/category/6819381)
 
 ## Star Trend
