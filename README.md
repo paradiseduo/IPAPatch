@@ -8,13 +8,43 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  本项目改编于[Naituw IPAPatch](https://github.com/Naituw/IPAPatch)，站在巨人的肩膀上学习
 *  本工程已集成Reavel 20的framework，直接运行即可添加
 *  本工程集成了FLEX.framework，运行后即可动态调试
-*  本工程集成了hookzz框架，使用方法请咨询查阅
+*  本工程集成了Dobby框架，使用方法见下方
 *  本工程集成了frida-gadget，基于frida 14.1.2版本重新编译，解决了线程阻塞问题，可以在非越狱手机上使用frida调试APP
 *  本工程集成了常见的反调试方法的绕过，如ptrace，syscall，sysctl，isatty等（IPAPatchBypassAntiDebugging.m）
 *  本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数（Tools.m）
 *  使用方法：将砸壳后的ipa包重命名为app.ipa，然后放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID
 *  代替class-dump的新方案[dsdump](https://github.com/paradiseduo/dsdump)
 *  要学习更多逆向知识，请看[这里](https://blog.csdn.net/youshaoduo/article/category/6819381)
+
+## Dobby使用
+以hook sum方法为例，sum为写在app.ipa中的一个C语言函数：
+```
+int sum(int a,int b){
+    return a + b;
+}
+```
+在IPAPatchEntry.m内
+```
+#import <objc/message.h> //为了使用objc_msgSend
+
+int (*originSum)(int a, int b); // 保留原始的方法实现的指针地址
+
+//新函数
+int hookSum(int a,int b){
+    return a * b;
+}
+
++ (void)load {
+    static uintptr_t sumOffset = 0x100005724; // sum函数的偏移地址可以通过IDA去查看
+    uintptr_t mainASLR = _dyld_get_image_vmaddr_slide(0); // 获取主程序的ASLR，因为sum函数在主程序的image中，因此这里的参数是0
+    uintptr_t sumAddress = mainASLR + sumOffset;
+    
+    // 构造SEL，dobbyHookWith:replace:origin:是OC封装过得DobbyHook(void *address, void *replace_call, void **origin_call)
+    SEL sel = NSSelectorFromString(@"dobbyHookWith:replace:origin:");
+    // 通过反射寻找DobbyOC类，并调用SEL
+    ((void (*) (id, SEL, void *, void *, void **)) objc_msgSend) (NSClassFromString(@"DobbyOC"), sel, (void *)sumAddress, hookSum, (void *)&originSum);
+}
+```
 
 ## Star Trend
 [![Stargazers over time](https://starchart.cc/paradiseduo/IPAPatch.svg)](https://starchart.cc/paradiseduo/IPAPatch)
@@ -217,3 +247,5 @@ I created some demo project, which shows you how to use `IPAPatch`:
 	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#### Dobby
+	https://github.com/jmpews/Dobby
