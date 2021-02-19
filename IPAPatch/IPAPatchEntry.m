@@ -19,8 +19,7 @@
 
 @implementation IPAPatchEntry
 
-+ (void)load
-{
++ (void)load {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //使用passHTTPS3时请注释掉下面5行代码，FLEX抓端口的原理跟passHTTPS3的原理一样，因此代码会出现冲突（NSURLProtocol只能存在一个）。
         Class a = NSClassFromString(@"FLEXManager");

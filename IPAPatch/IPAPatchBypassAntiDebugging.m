@@ -203,7 +203,7 @@ static void disable_ioctl() {
     if (isatty(1)) {
         disable_exit();
         disable_pt_deny_attach();
-        disable_sysctl_debugger_checking();
+//        disable_sysctl_debugger_checking(); // 引入了Dobby之后sysctl不能fishhook，不然会崩溃
         disable_syscall_debugger_checking();
         disable_isatty_debugger_checking();
 //        disable_ioctl();
