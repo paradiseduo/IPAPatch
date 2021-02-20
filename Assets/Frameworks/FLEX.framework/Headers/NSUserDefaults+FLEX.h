@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner on 3/10/20.
-//  Copyright © 2020 Flipboard. All rights reserved.
+//  Copyright © 2020 FLEX Team. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,7 +13,8 @@ extern NSString * const kFLEXDefaultsToolbarTopMarginKey;
 extern NSString * const kFLEXDefaultsiOSPersistentOSLogKey;
 extern NSString * const kFLEXDefaultsHidePropertyIvarsKey;
 extern NSString * const kFLEXDefaultsHidePropertyMethodsKey;
-extern NSString * const kFLEXDefaultsHideMethodOverridesKey;
+extern NSString * const kFLEXDefaultsHidePrivateMethodsKey;
+extern NSString * const kFLEXDefaultsShowMethodOverridesKey;
 extern NSString * const kFLEXDefaultsHideVariablePreviewsKey;
 extern NSString * const kFLEXDefaultsNetworkHostBlacklistKey;
 extern NSString * const kFLEXDefaultsDisableOSLogForceASLKey;
@@ -22,7 +23,7 @@ extern NSString * const kFLEXDefaultsRegisterJSONExplorerKey;
 /// All BOOL preferences are NO by default
 @interface NSUserDefaults (FLEX)
 
-- (void)toggleBoolForKey:(NSString *)key;
+- (void)flex_toggleBoolForKey:(NSString *)key;
 
 @property (nonatomic) double flex_toolbarTopMargin;
 
@@ -38,6 +39,7 @@ extern NSString * const kFLEXDefaultsRegisterJSONExplorerKey;
 
 @property (nonatomic) BOOL flex_explorerHidesPropertyIvars;
 @property (nonatomic) BOOL flex_explorerHidesPropertyMethods;
+@property (nonatomic) BOOL flex_explorerHidesPrivateMethods;
 @property (nonatomic) BOOL flex_explorerShowsMethodOverrides;
 @property (nonatomic) BOOL flex_explorerHidesVariablePreviews;
 
