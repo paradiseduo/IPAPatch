@@ -7,6 +7,8 @@
 //
 
 #import "Tools.h"
+#import "CustomURLProtocol.h"
+
 
 void checkDylibs(void)
 {
@@ -66,6 +68,99 @@ void bgl_exchangeMethod(Class originalClass, SEL originalSel, Class replacedClas
 }
 
 @implementation Tools
++ (void)showFLEXDelayBy:(int64_t)delay {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        Class a = NSClassFromString(@"FLEXManager");
+        SEL sel1 = NSSelectorFromString(@"sharedManager");
+        id obj = [a performSelector:sel1 withObject:nil];
+        SEL sel2 = NSSelectorFromString(@"showExplorer");
+        [obj performSelector:sel2 withObject:nil];
+    });
+}
+
++ (void)passHTTPS1 {
+    /**
+        方案1，如果该方案不好使，那么请使用方案2
+     */
+    bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), NSSelectorFromString(@"setSSLPinningMode:"), [Tools class], @selector(sslPinningMode:), NSSelectorFromString(@"setSSLPinningMode:"));
+    bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), NSSelectorFromString(@"setAllowInvalidCertificates:"), [Tools class], @selector(allowInvalid:), NSSelectorFromString(@"setAllowInvalidCertificates:"));
+    bgl_exchangeMethod(NSClassFromString(@"AFSecurityPolicy"), NSSelectorFromString(@"setValidatesDomainName:"), [Tools class], @selector(validatesDomainName:), NSSelectorFromString(@"setAllowInvalidCertificates:"));
+}
+
+- (void)allowInvalid:(BOOL)v {
+    [self allowInvalid:YES];
+}
+
+- (void)validatesDomainName:(BOOL)y {
+    [self validatesDomainName:NO];
+}
+
+- (void)sslPinningMode:(NSUInteger)mode {
+    [self sslPinningMode:0];
+}
+
++ (void)passHTTPS2 {
+    /**
+        方案2，如果该方案不好使，那么请使用方案1
+     */
+    bgl_exchangeMethod(NSClassFromString(@"AFHTTPSessionManager"), NSSelectorFromString(@"setSecurityPolicy:"), [Tools class], @selector(securityPolicy:), NSSelectorFromString(@"setSecurityPolicy:"));
+}
+
+- (void)securityPolicy:(id)policy {
+    Class a = NSClassFromString(@"AFSecurityPolicy");
+    SEL sel1 = NSSelectorFromString(@"defaultPolicy");
+    id securityPolicy = [a performSelector:sel1];
+    SEL sel2 = NSSelectorFromString(@"setAllowInvalidCertificates:");
+    [securityPolicy performSelector:sel2 withObject:[NSNumber numberWithBool:YES]];
+    SEL sel3 = NSSelectorFromString(@"setValidatesDomainName:");
+    [securityPolicy performSelector:sel3 withObject:[NSNumber numberWithBool:NO]];
+    
+    [self securityPolicy:securityPolicy];
+}
+
++ (void)passHTTPS3 {
+    /**
+       方案3，如果该方案1/2不好使，那么请使用方案3
+    */
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        [NSURLProtocol registerClass:[CustomURLProtocol class]];
+    }];
+}
+
+
++ (void)exchangeNSStringWithFormat {
+    exchangeClassMethod(@"NSString", @"stringWithFormat:", @"Tools", @"myStringWithFormat:");
+}
+
++ (NSString *)myStringWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
+    va_list ap;
+    va_start(ap, format);
+    NSMutableString * result = [[NSMutableString alloc] initWithFormat:format arguments:ap];
+    va_end(ap);
+    return result;
+}
+
++ (void)exchangeStringByAppendingString {
+    bgl_exchangeMethod([NSString class], NSSelectorFromString(@"stringByAppendingString:"), [Tools class], @selector(myStringByAppendingString:),  NSSelectorFromString(@"stringByAppendingString:"));
+}
+
+- (NSString *)myStringByAppendingString:(NSString *)str {
+    NSString * result = [self myStringByAppendingString:str];
+    NSLog(@"$$$: %@", result);
+    return result;
+}
+
++ (void)exchangeAppendString {
+    bgl_exchangeMethod([NSMutableString class], NSSelectorFromString(@"appendString:"), [Tools class], @selector(myMutableStringAppendString:), NSSelectorFromString(@"appendString:"));
+}
+
+- (NSMutableString *)myMutableStringAppendString:(NSString *)str {
+    NSMutableString * result = [[NSMutableString alloc] init];
+    result = [self myMutableStringAppendString:str];
+    NSLog(@"###: %@", result);
+    return result;
+}
+
 + (NSData *)dataForHexString:(NSString *)hexString {
     if (hexString == nil) {
         return nil;
