@@ -8,10 +8,11 @@
 
 #import "IPAPatchBypassAntiDebugging.h"
 #import "fishhook.h"
+#import "PatchSVC.h"
 #import <dlfcn.h>
 #import <sys/sysctl.h>
 #import <sys/syscall.h>
-#include <mach-o/dyld.h>
+#import <mach-o/dyld.h>
 #import <sys/termios.h>
 #import <sys/ioctl.h>
 
@@ -210,6 +211,7 @@ static void disable_ioctl() {
         disable_sysctl_debugger_checking();
         disable_syscall_debugger_checking();
         disable_isatty_debugger_checking();
+//        kill_anti_debug(); //patch svc 0x80 anti debug
 //        disable_ioctl();
     }
 }
