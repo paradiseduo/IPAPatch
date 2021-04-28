@@ -17,6 +17,10 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  要学习更多逆向知识，请看[这里](https://blog.csdn.net/youshaoduo/article/category/6819381)
 
 ## Dobby使用
+首先在option.plist中将Dobby的选项打开：
+
+![image](https://user-images.githubusercontent.com/14846965/116368246-b305bf80-a83a-11eb-9f57-2358f894613e.png)
+
 以hook sum方法为例，sum为写在app.ipa中的一个C语言函数：
 ```
 int sum(int a,int b){
