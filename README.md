@@ -11,10 +11,11 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  本工程集成了Dobby框架，使用方法见下方（Dobby默认不启用，需自行开启）
 *  本工程集成了frida-gadget，基于frida 14.1.2版本重新编译，解决了线程阻塞问题，可以在非越狱手机上使用frida调试APP
 *  本工程集成了常见的反调试方法的绕过，如ptrace，syscall，sysctl，isatty等（IPAPatchBypassAntiDebugging.m）
+*  本工程集成了svc 0x80的反调试方法的绕过（IPAPatchBypassAntiDebugging.m），代码来自于[xia0LLDB](https://github.com/4ch12dy/xia0LLDB)，未经完全测试，可能会有[页边界问题](https://bbs.pediy.com/thread-254385.htm)
 *  本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数（Tools.m）
 *  使用方法：将砸壳后的ipa包重命名为app.ipa，然后放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID
 *  代替class-dump的新方案[dsdump](https://github.com/paradiseduo/dsdump)
-*  要学习更多逆向知识，请看[这里](https://blog.csdn.net/youshaoduo/article/category/6819381)
+*  要学习更多逆向知识，请看[这里(很遗憾，由于某些原因博客被永久封禁，不再更新)](https://blog.csdn.net/youshaoduo/article/category/6819381)
 
 ## Dobby使用
 首先在option.plist中将Dobby的选项打开：
@@ -253,3 +254,6 @@ I created some demo project, which shows you how to use `IPAPatch`:
 
 #### Dobby
 	https://github.com/jmpews/Dobby
+	
+#### xia0LLDB
+	https://github.com/4ch12dy/xia0LLDB
