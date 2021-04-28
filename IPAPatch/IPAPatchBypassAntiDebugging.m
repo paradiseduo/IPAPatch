@@ -98,8 +98,12 @@ int	hooked_sysctl(int * arg0, u_int arg1, void * arg2, size_t * arg3, void * arg
 
 static void disable_sysctl_debugger_checking()
 {
-    original_sysctl = dlsym(RTLD_DEFAULT, "sysctl");
-    rebind_symbols((struct rebinding[1]){{"sysctl", hooked_sysctl}}, 1);
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"options" ofType:@"plist"];
+    NSMutableDictionary *dir = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+    if (dir[@"USE_DOBBY"] == 0) { // 引入了Dobby之后sysctl不能fishhook，不然会崩溃
+        original_sysctl = dlsym(RTLD_DEFAULT, "sysctl");
+        rebind_symbols((struct rebinding[1]){{"sysctl", hooked_sysctl}}, 1);
+    }
 }
 
 // Bypassing isatty debugger checking technique
@@ -203,7 +207,7 @@ static void disable_ioctl() {
     if (isatty(1)) {
         disable_exit();
         disable_pt_deny_attach();
-//        disable_sysctl_debugger_checking(); // 引入了Dobby之后sysctl不能fishhook，不然会崩溃
+        disable_sysctl_debugger_checking();
         disable_syscall_debugger_checking();
         disable_isatty_debugger_checking();
 //        disable_ioctl();

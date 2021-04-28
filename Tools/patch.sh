@@ -56,6 +56,7 @@ RESTORE_SYMBOLS=$(/usr/libexec/PlistBuddy -c "Print RESTORE_SYMBOLS"  "${OPTIONS
 IGNORE_UI_SUPPORTED_DEVICES=$(/usr/libexec/PlistBuddy -c "Print IGNORE_UI_SUPPORTED_DEVICES"  "${OPTIONS_PATH}")
 REMOVE_WATCHPLACEHOLDER=$(/usr/libexec/PlistBuddy -c "Print REMOVE_WATCHPLACEHOLDER"  "${OPTIONS_PATH}")
 USE_ORIGINAL_ENTITLEMENTS=$(/usr/libexec/PlistBuddy -c "Print USE_ORIGINAL_ENTITLEMENTS"  "${OPTIONS_PATH}")
+USE_DOBBY=$(/usr/libexec/PlistBuddy -c "Print USE_DOBBY"  "${OPTIONS_PATH}")
 
 echo "RESTORE_SYMBOLS: $RESTORE_SYMBOLS"
 echo "CREATE_IPA_FILE: $CREATE_IPA_FILE"
@@ -188,10 +189,20 @@ for file in `ls -1 "${FRAMEWORKS_TO_INJECT_PATH}"`; do
     filename="${file%.*}"
 
     echo -n '     '
-    echo "Install Load: $file -> @executable_path/Frameworks/$file/$filename"
+    if  [ "$filename" == "Dobby" ]
+    then
+        if [ "$USE_DOBBY" = true ]
+        then
+            echo "Install Load: $file -> @executable_path/Frameworks/$file/$filename"
+            
+            "$OPTOOL" install -c load -p "@executable_path/Frameworks/$file/$filename" -t "$TARGET_APP_PATH/$APP_BINARY"
+        fi
+    else
+        echo "Install Load: $file -> @executable_path/Frameworks/$file/$filename"
 
-    "$OPTOOL" install -c load -p "@executable_path/Frameworks/$file/$filename" -t "$TARGET_APP_PATH/$APP_BINARY"
-
+        "$OPTOOL" install -c load -p "@executable_path/Frameworks/$file/$filename" -t "$TARGET_APP_PATH/$APP_BINARY"
+    fi
+    
     CopySwiftStdLib "$TARGET_APP_FRAMEWORKS_PATH/$file/$filename" "$TARGET_APP_FRAMEWORKS_PATH"
 done
 
@@ -222,7 +233,9 @@ echo "Injecting Resources from $RESOURCES_TO_INJECT_PATH"
 rsync -av --exclude=".*" "${RESOURCES_TO_INJECT_PATH}/" "$TARGET_APP_PATH"
 
 
-
+# 5-4. Copy options.plist To app
+echo "Copy options.plist To app $OPTIONS_PATH"
+cp "$OPTIONS_PATH" "$TARGET_APP_PATH"
 
 
 
