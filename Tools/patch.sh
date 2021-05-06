@@ -84,7 +84,7 @@ if [ "$RESTORE_SYMBOLS" = true ]; then
     # ---------------------------------------------------
     # 2.1 try to thin Mach-O File
 
-    MACH_O_FILE_NAME=`basename $TEMP_APP_PATH .app`
+    MACH_O_FILE_NAME=`basename $TEMP_APP_PATH.app`
     MACH_O_FILE_PATH=$TEMP_APP_PATH/$MACH_O_FILE_NAME
     echo "MACH_O_FILE_PATH: $MACH_O_FILE_PATH"
 
