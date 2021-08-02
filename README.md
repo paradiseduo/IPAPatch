@@ -15,6 +15,7 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数（Tools.m）
 *  使用方法：将砸壳后的ipa包重命名为app.ipa，然后放入Assets文件夹下，打开IPAPatch工程直接运行即可，运行前请选好证书，改好bundleID
 *  代替class-dump的新方案[dsdump](https://github.com/paradiseduo/dsdump)
+*  在装有M1芯片的Mac上脱壳的方案[appdecrypt](https://github.com/paradiseduo/appdecrypt)
 *  要学习更多逆向知识，请看[这里(很遗憾，由于某些原因博客被永久封禁，不再更新)](https://blog.csdn.net/youshaoduo/article/category/6819381)
 
 ## Dobby使用
