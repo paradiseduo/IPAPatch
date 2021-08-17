@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		84788D1126CB96120040100B /* PermissionCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 84788D0F26CB96120040100B /* PermissionCheck.h */; };
+		84788D1226CB96120040100B /* PermissionCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 84788D1026CB96120040100B /* PermissionCheck.m */; };
 		B67811E826394F5800499C19 /* PatchSVC.h in Headers */ = {isa = PBXBuildFile; fileRef = B67811E526394E5B00499C19 /* PatchSVC.h */; };
 		B67811E926394F5A00499C19 /* PatchSVC.c in Sources */ = {isa = PBXBuildFile; fileRef = B67811E626394E5B00499C19 /* PatchSVC.c */; };
 		BE47177524E3936800A77647 /* SaveModel.h in Headers */ = {isa = PBXBuildFile; fileRef = BE47177324E3936800A77647 /* SaveModel.h */; };
@@ -60,6 +62,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		84788D0F26CB96120040100B /* PermissionCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionCheck.h; sourceTree = "<group>"; };
+		84788D1026CB96120040100B /* PermissionCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PermissionCheck.m; sourceTree = "<group>"; };
 		B67811E526394E5B00499C19 /* PatchSVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PatchSVC.h; sourceTree = "<group>"; };
 		B67811E626394E5B00499C19 /* PatchSVC.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = PatchSVC.c; sourceTree = "<group>"; };
 		BE10717624C9A9A1009C3CEF /* IPAPatch-DummyApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "IPAPatch-DummyApp.entitlements"; sourceTree = "<group>"; };
@@ -153,6 +157,8 @@
 				C6B2630B1E7BC97B009B4DEA /* Info.plist */,
 				C6B263251E7BC9DF009B4DEA /* IPAPatchEntry.h */,
 				C6B263261E7BC9DF009B4DEA /* IPAPatchEntry.m */,
+				84788D0F26CB96120040100B /* PermissionCheck.h */,
+				84788D1026CB96120040100B /* PermissionCheck.m */,
 				BE47177724E393E000A77647 /* Tools.h */,
 				BE47177824E393E000A77647 /* Tools.m */,
 				B67811E526394E5B00499C19 /* PatchSVC.h */,
@@ -219,6 +225,7 @@
 				C6B263271E7BC9DF009B4DEA /* IPAPatchEntry.h in Headers */,
 				C63AC1A61E838BB70094B1C5 /* fishhook.h in Headers */,
 				C63AC1AA1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h in Headers */,
+				84788D1126CB96120040100B /* PermissionCheck.h in Headers */,
 				BE47177924E393E000A77647 /* Tools.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,6 +371,7 @@
 				C63AC1AB1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.m in Sources */,
 				B67811E926394F5A00499C19 /* PatchSVC.c in Sources */,
 				C6B263281E7BC9DF009B4DEA /* IPAPatchEntry.m in Sources */,
+				84788D1226CB96120040100B /* PermissionCheck.m in Sources */,
 				E8243A0F23ACBF5B0077E34F /* CustomURLProtocol.m in Sources */,
 				BE47177A24E393E000A77647 /* Tools.m in Sources */,
 				BE47177624E3936800A77647 /* SaveModel.m in Sources */,
