@@ -1,3 +1,4 @@
 *.ipa
 Temp
 Assets/Payload*
+IPAPatch.xcodeproj/xcshareddata
