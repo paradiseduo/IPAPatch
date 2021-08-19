@@ -83,32 +83,24 @@ if [ "$RESTORE_SYMBOLS" = true ]; then
 
     # ---------------------------------------------------
     # 2.1 try to thin Mach-O File
-
-    MACH_O_FILE_NAME=`basename $TEMP_APP_PATH.app`
+    MACH_O_FILE_NAME=`basename $TEMP_APP_PATH`
+    MACH_O_FILE_NAME=$(echo $MACH_O_FILE_NAME | cut -d . -f1)
     MACH_O_FILE_PATH=$TEMP_APP_PATH/$MACH_O_FILE_NAME
     echo "MACH_O_FILE_PATH: $MACH_O_FILE_PATH"
-
-    lipo -thin armv7 $MACH_O_FILE_PATH -o $TEMP_PATH/"$MACH_O_FILE_NAME"_armv7
-    lipo -thin arm64 $MACH_O_FILE_PATH -o $TEMP_PATH/"$MACH_O_FILE_NAME"_arm64
 
     # ---------------------------------------------------
     # 2.2 try to restore symbol by archs
 
     # Sources: https://github.com/tobefuturer/restore-symbol
     # restore symbol technique
-
     RESTORE_SYMBOL_TOOL="${SRCROOT}/Tools/restore-symbol"
-    "$RESTORE_SYMBOL_TOOL" $TEMP_PATH/$"$MACH_O_FILE_NAME"_armv7 -o $TEMP_PATH/$"$MACH_O_FILE_NAME"_armv7_with_symbol
-    "$RESTORE_SYMBOL_TOOL" $TEMP_PATH/$"$MACH_O_FILE_NAME"_arm64 -o $TEMP_PATH/$"$MACH_O_FILE_NAME"_arm64_with_symbol
-
+    RESTORE_SYMBOL_MACHO_PATH="${SRCROOT}/Temp/${MACH_O_FILE_NAME}"
+    "$RESTORE_SYMBOL_TOOL" --replace-restrict $MACH_O_FILE_PATH -o $RESTORE_SYMBOL_MACHO_PATH
+    
     # ---------------------------------------------------
     # 2.3 reintegrate Mach-O File
-
-    lipo -create $TEMP_PATH/"$MACH_O_FILE_NAME"_armv7_with_symbol $TEMP_PATH/"$MACH_O_FILE_NAME"_arm64_with_symbol -o $TEMP_PATH/"$MACH_O_FILE_NAME"_with_symbol
-
     rm -f $MACH_O_FILE_PATH
-    cp $TEMP_PATH/"$MACH_O_FILE_NAME"_with_symbol $MACH_O_FILE_PATH
-
+    cp $RESTORE_SYMBOL_MACHO_PATH $MACH_O_FILE_PATH
 fi # [ "$RESTORE_SYMBOLS" ]
 
 
