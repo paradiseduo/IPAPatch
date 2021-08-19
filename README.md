@@ -9,7 +9,7 @@ IPAPatch provide a simple way to patch iOS Apps, without needing to jailbreak.
 *  本工程已集成Reavel 20的framework，直接运行即可添加
 *  本工程集成了FLEX.framework，运行后即可动态调试
 *  本工程集成了Dobby框架，使用方法见下方（Dobby默认不启用，需自行开启）
-*  本工程集成了frida-gadget，基于frida 15.0.5版本重新编译，解决了线程阻塞问题，可以在非越狱手机上使用frida调试APP
+*  本工程集成了frida-gadget，基于frida 15.0.15版本重新编译，解决了线程阻塞问题，可以在非越狱手机上使用frida调试APP
 *  本工程集成了常见的反调试方法的绕过，如ptrace，syscall，sysctl，isatty等（IPAPatchBypassAntiDebugging.m）
 *  本工程集成了svc 0x80的反调试方法的绕过（IPAPatchBypassAntiDebugging.m），代码来自于[xia0LLDB](https://github.com/4ch12dy/xia0LLDB)，未经完全测试，可能会有[页边界问题](https://bbs.pediy.com/thread-254385.htm)
 *  本工程利用OC的runtime机制，添加了替换任意方法(包括代理方法)的函数（Tools.m）
