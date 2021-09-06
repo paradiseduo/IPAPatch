@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		8444640B26E5EACB00E6E659 /* HookURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8444640926E5EACB00E6E659 /* HookURLProtocol.h */; };
+		8444640C26E5EACB00E6E659 /* HookURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 8444640A26E5EACB00E6E659 /* HookURLProtocol.m */; };
 		84788D1126CB96120040100B /* PermissionCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 84788D0F26CB96120040100B /* PermissionCheck.h */; };
 		84788D1226CB96120040100B /* PermissionCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 84788D1026CB96120040100B /* PermissionCheck.m */; };
 		B67811E826394F5800499C19 /* PatchSVC.h in Headers */ = {isa = PBXBuildFile; fileRef = B67811E526394E5B00499C19 /* PatchSVC.h */; };
@@ -62,6 +64,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8444640926E5EACB00E6E659 /* HookURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HookURLProtocol.h; sourceTree = "<group>"; };
+		8444640A26E5EACB00E6E659 /* HookURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HookURLProtocol.m; sourceTree = "<group>"; };
 		84788D0F26CB96120040100B /* PermissionCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PermissionCheck.h; sourceTree = "<group>"; };
 		84788D1026CB96120040100B /* PermissionCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PermissionCheck.m; sourceTree = "<group>"; };
 		B67811E526394E5B00499C19 /* PatchSVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PatchSVC.h; sourceTree = "<group>"; };
@@ -167,6 +171,8 @@
 				BE47177424E3936800A77647 /* SaveModel.m */,
 				E8243A0B23ACBF5B0077E34F /* CustomURLProtocol.h */,
 				E8243A0C23ACBF5B0077E34F /* CustomURLProtocol.m */,
+				8444640926E5EACB00E6E659 /* HookURLProtocol.h */,
+				8444640A26E5EACB00E6E659 /* HookURLProtocol.m */,
 				C63AC1A81E8392210094B1C5 /* IPAPatchBypassAntiDebugging.h */,
 				C63AC1A91E8392210094B1C5 /* IPAPatchBypassAntiDebugging.m */,
 			);
@@ -219,6 +225,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8444640B26E5EACB00E6E659 /* HookURLProtocol.h in Headers */,
 				E8243A0D23ACBF5B0077E34F /* CustomURLProtocol.h in Headers */,
 				BE47177524E3936800A77647 /* SaveModel.h in Headers */,
 				B67811E826394F5800499C19 /* PatchSVC.h in Headers */,
@@ -371,6 +378,7 @@
 				C63AC1AB1E8392210094B1C5 /* IPAPatchBypassAntiDebugging.m in Sources */,
 				B67811E926394F5A00499C19 /* PatchSVC.c in Sources */,
 				C6B263281E7BC9DF009B4DEA /* IPAPatchEntry.m in Sources */,
+				8444640C26E5EACB00E6E659 /* HookURLProtocol.m in Sources */,
 				84788D1226CB96120040100B /* PermissionCheck.m in Sources */,
 				E8243A0F23ACBF5B0077E34F /* CustomURLProtocol.m in Sources */,
 				BE47177A24E393E000A77647 /* Tools.m in Sources */,

@@ -20,6 +20,9 @@
         // 使用passHTTPS3时请不要调用显示FLEX，FLEX抓端口的原理跟passHTTPS3的原理一样，因此代码会出现冲突（NSURLProtocol只能存在一个）。
         [Tools showFLEXDelayBy:5];
         
+        // 可以检测网络请求中出现的敏感数据，规则自己去HookURLProtocol.m里写
+//        [NSURLProtocol registerClass:[NSClassFromString(@"HookURLProtocol") class]];
+
         // 开始检测权限使用
 //        [PermissionCheck start];
         

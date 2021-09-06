@@ -103,4 +103,17 @@
         }
     }
 }
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
+    //    NSURLSessionAuthChallengeUseCredential = 0, 使用（信任）证书
+    //    NSURLSessionAuthChallengePerformDefaultHandling = 1, 默认，忽略
+    //    NSURLSessionAuthChallengeCancelAuthenticationChallenge = 2,   取消
+    //    NSURLSessionAuthChallengeRejectProtectionSpace = 3,  这次取消，下载次再来问
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        NSURLCredential * c = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+        if (completionHandler) {
+            completionHandler(NSURLSessionAuthChallengeUseCredential, c);
+        }
+    }
+}
 @end
