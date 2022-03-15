@@ -49,7 +49,7 @@ static SaveModel * instance = nil;
 }
 
 - (void)clean {
-//    [_save removeAllObjects];
+    [_save removeAllObjects];
 }
 
 @end

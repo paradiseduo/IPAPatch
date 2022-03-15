@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HookURLProtocol : NSURLProtocol
+@interface HookURLProtocol : NSObject
 
 @end
 

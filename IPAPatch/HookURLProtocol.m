@@ -7,142 +7,57 @@
 //
 
 #import "HookURLProtocol.h"
+#import "Tools.h"
 #import <objc/runtime.h>
 #import "zlib.h"
 
-#define HookURLProtocolHandledKey @"HookURLProtocolHandledKey"
+@interface HookURLProtocol()
 
-typedef NSURLSessionConfiguration*(*SessionConfigConstructor)(id,SEL);
-static SessionConfigConstructor orig_defaultSessionConfiguration;
-static SessionConfigConstructor orig_ephemeralSessionConfiguration;
-
-void forSessionConfiguration(NSURLSessionConfiguration* sessionConfig) {
-    // Runtime check to make sure the API is available on this version
-    if ([sessionConfig respondsToSelector:@selector(protocolClasses)] && [sessionConfig respondsToSelector:@selector(setProtocolClasses:)]) {
-        NSMutableArray * urlProtocolClasses = [NSMutableArray arrayWithArray:sessionConfig.protocolClasses];
-        Class protoCls = HookURLProtocol.class;
-        if (![urlProtocolClasses containsObject:protoCls]) {
-            [urlProtocolClasses insertObject:protoCls atIndex:0];
-        } else if ([urlProtocolClasses containsObject:protoCls]) {
-            [urlProtocolClasses removeObject:protoCls];
-        }
-        sessionConfig.protocolClasses = urlProtocolClasses;
-    }
-}
-
-IMP HTTParadiseReplaceMethod(SEL selector, IMP newImpl, Class affectedClass, BOOL isClassMethod) {
-    Method origMethod = isClassMethod ? class_getClassMethod(affectedClass, selector) : class_getInstanceMethod(affectedClass, selector);
-    IMP origImpl = method_getImplementation(origMethod);
-
-    if (!class_addMethod(isClassMethod ? object_getClass(affectedClass) : affectedClass, selector, newImpl, method_getTypeEncoding(origMethod))) {
-        method_setImplementation(origMethod, newImpl);
-    }
-
-    return origImpl;
-}
-
-
-static NSURLSessionConfiguration* HTTParadise_defaultSessionConfiguration(id self, SEL _cmd) {
-    NSURLSessionConfiguration* config = orig_defaultSessionConfiguration(self ,_cmd); // call original method
-    forSessionConfiguration(config);
-    return config;
-}
-
-static NSURLSessionConfiguration* HTTParadise_ephemeralSessionConfiguration(id self, SEL _cmd) {
-    NSURLSessionConfiguration* config = orig_ephemeralSessionConfiguration(self, _cmd); // call original method
-    forSessionConfiguration(config);
-    return config;
-}
-
-@interface HookURLProtocol()<NSURLSessionDataDelegate>
-@property (nonatomic, strong) NSURLSession * session;
 @end
 
 @implementation HookURLProtocol
-+ (void)load
-{
-    orig_defaultSessionConfiguration = (SessionConfigConstructor)HTTParadiseReplaceMethod(@selector(defaultSessionConfiguration), (IMP)HTTParadise_defaultSessionConfiguration, [NSURLSessionConfiguration class], YES);
-    orig_ephemeralSessionConfiguration = (SessionConfigConstructor)HTTParadiseReplaceMethod(@selector(ephemeralSessionConfiguration), (IMP)HTTParadise_ephemeralSessionConfiguration, [NSURLSessionConfiguration class], YES);
++ (void)load {
+    bgl_exchangeMethod([NSURLSessionTask class], @selector(resume), [HookURLProtocol class], @selector(f_resume), @selector(resume));
 }
 
-+ (BOOL)canInitWithRequest:(NSURLRequest *)request {
-    //看看是否已经处理过了，防止无限循环
-    if ([NSURLProtocol propertyForKey:HookURLProtocolHandledKey inRequest:request]) {
-        return NO;
+- (void)f_resume {
+    NSURLSessionTask * task = (NSURLSessionTask *)self;
+    if ([@[@"http", @"https"] containsObject:task.originalRequest.URL.scheme] && task.originalRequest.URL.host != nil) {
+        permissionCheck(task.originalRequest);
     }
-    return YES;
-}
-
-- (void)startLoading {
-    //打标签，防止无限循环
-    NSURLSessionConfiguration * config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    self.session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-    NSURLSessionDataTask * task = [self.session dataTaskWithRequest:[self request]];
-    [task resume];
-}
-
-- (void)stopLoading
-{
-    [self.session invalidateAndCancel];
-    self.session = nil;
-}
-
-+ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request {
-    //打标签，防止无限循环
-    NSMutableURLRequest *mutableReqeust = [request mutableCopy];
-    [NSURLProtocol setProperty:@YES forKey:HookURLProtocolHandledKey inRequest:mutableReqeust];
-    permissionCheck(mutableReqeust);
-    return [mutableReqeust copy];
-}
-
-
-#pragma mark - NSURLSessionDataDelegate
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    if (error) {
-        [self.client URLProtocol:self didFailWithError:error];
-    } else {
-        [self.client URLProtocolDidFinishLoading:self];
-    }
-}
-
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
-    [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
-    completionHandler(NSURLSessionResponseAllow);
-}
-
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
-    [self.client URLProtocol:self didLoadData:data];
-}
-
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask willCacheResponse:(NSCachedURLResponse *)proposedResponse completionHandler:(void (^)(NSCachedURLResponse *cachedResponse))completionHandler {
-    completionHandler(proposedResponse);
+    [self f_resume];
 }
 
 #pragma mark - check
 
-void permissionCheck(NSMutableURLRequest *mutableReqeust) {
+void permissionCheck(NSURLRequest *mutableReqeust) {
     NSString * body = @"";
-    if ([mutableReqeust.HTTPMethod isEqualToString:@"POST"] && mutableReqeust.HTTPBody == nil && mutableReqeust.HTTPBodyStream != nil) {
-        NSInteger maxLength = 1024;
-        uint8_t d[maxLength];
-        NSInputStream *stream = mutableReqeust.HTTPBodyStream;
-        NSMutableData *data = [[NSMutableData alloc] init];
-        [stream open];
-        BOOL endOfStreamReached = NO;
-        while (!endOfStreamReached) {
-            NSInteger bytesRead = [stream read:d maxLength:maxLength];
-            if (bytesRead == 0) { //文件读取到最后
-                endOfStreamReached = YES;
-            } else if (bytesRead == -1) { //文件读取错误
-                endOfStreamReached = YES;
-            } else if (stream.streamError == nil) {
-                [data appendBytes:(void *)d length:bytesRead];
+    if ([mutableReqeust.HTTPMethod isEqualToString:@"POST"]) {
+        if (mutableReqeust.HTTPBody) {
+            body = bodyString(mutableReqeust.HTTPBody);
+        } else if (mutableReqeust.HTTPBodyStream != nil) {
+            NSInteger maxLength = 1024;
+            uint8_t d[maxLength];
+            NSInputStream *stream = mutableReqeust.HTTPBodyStream;
+            NSMutableData *data = [[NSMutableData alloc] init];
+            [stream open];
+            BOOL endOfStreamReached = NO;
+            while (!endOfStreamReached) {
+                NSInteger bytesRead = [stream read:d maxLength:maxLength];
+                if (bytesRead == 0) { //文件读取到最后
+                    endOfStreamReached = YES;
+                } else if (bytesRead == -1) { //文件读取错误
+                    endOfStreamReached = YES;
+                } else if (stream.streamError == nil) {
+                    [data appendBytes:(void *)d length:bytesRead];
+                }
             }
+            NSData * nd = [data copy];
+            [stream close];
+            body = bodyString(nd);
+        } else {
+            body = @"";
         }
-        NSData * nd = [data copy];
-        [stream close];
-        body = bodyString(nd);
     }
     if ([body length] > 0) {
         if (regexCheck(@"^1[3|4|5|7|8][0-9]\\d{8}$", body) || [body.uppercaseString containsString:@"IDFA"]) {
