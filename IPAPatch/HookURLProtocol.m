@@ -9,15 +9,18 @@
 #import "HookURLProtocol.h"
 #import "Tools.h"
 #import <objc/runtime.h>
+#import <WebKit/WebKit.h>
 #import "zlib.h"
 
-@interface HookURLProtocol()
+@interface HookURLProtocol()<WKURLSchemeHandler>
 
 @end
 
 @implementation HookURLProtocol
 + (void)load {
     bgl_exchangeMethod([NSURLSessionTask class], @selector(resume), [HookURLProtocol class], @selector(f_resume), @selector(resume));
+    bgl_exchangeMethod([WKWebView class], @selector(initWithFrame:configuration:), [HookURLProtocol class], @selector(f_initWithFrame:configuration:), @selector(initWithFrame:configuration:));
+    exchangeClassMethod(@"WKWebView", @"handlesURLScheme:", @"HookURLProtocol", @"f_handlesURLScheme:");
 }
 
 - (void)f_resume {
@@ -25,7 +28,48 @@
     if ([@[@"http", @"https"] containsObject:task.originalRequest.URL.scheme] && task.originalRequest.URL.host != nil) {
         permissionCheck(task.originalRequest);
     }
+    if ([@[@"http", @"https"] containsObject:task.originalRequest.URL.scheme] && task.originalRequest.URL.host != nil) {
+        NSString * last = [task.originalRequest.URL.path pathExtension];
+        if (last == nil || last.length == 0) {
+            permissionCheck(task.originalRequest);
+        }
+    }
     [self f_resume];
+}
+
+- (instancetype)f_initWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration {
+    if (@available(iOS 11.0, *)) {
+        WKWebViewConfiguration *webViewConfiguration = [[WKWebViewConfiguration alloc] init];
+        [webViewConfiguration setURLSchemeHandler:[[HookURLProtocol alloc] init] forURLScheme:@"http"];
+        [webViewConfiguration setURLSchemeHandler:[[HookURLProtocol alloc] init] forURLScheme:@"https"];
+        return [self f_initWithFrame:frame configuration:webViewConfiguration];
+    } else {
+        return [self f_initWithFrame:frame configuration:configuration];
+    }
+}
+
++ (BOOL)f_handlesURLScheme:(NSString *)urlScheme {
+    if ([urlScheme isEqualToString:@"http"] || [urlScheme isEqualToString:@"https"]) {
+        return NO;
+    }
+    return [self f_handlesURLScheme: urlScheme];
+}
+
+- (void)webView:(WKWebView *)webView startURLSchemeTask:(id <WKURLSchemeTask>)urlSchemeTask API_AVAILABLE(ios(11.0)) {
+    NSURLRequest *request = urlSchemeTask.request;
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            [urlSchemeTask didFailWithError:error];
+        } else {
+            [urlSchemeTask didReceiveResponse:response];
+            [urlSchemeTask didReceiveData:data];
+            [urlSchemeTask didFinish];
+        }
+    }] resume];
+}
+
+- (void)webView:(WKWebView *)webView stopURLSchemeTask:(id <WKURLSchemeTask>)urlSchemeTask API_AVAILABLE(ios(11.0)) {
+    
 }
 
 #pragma mark - check
