@@ -283,4 +283,35 @@ void bgl_exchangeMethod(Class originalClass, SEL originalSel, Class replacedClas
     }
     return result;
 }
+
++ (void)classList:(Class)defaultClass recursion:(BOOL)recursion keyWord:(NSString *)keyword {
+    [self getClassMethods:defaultClass];
+    int count = objc_getClassList(NULL, 0);
+    Class *classes = (Class *)malloc(sizeof(Class) * count);
+    objc_getClassList(classes, count);
+    for (int i = 0; i < count; i++) {
+        if (defaultClass == class_getSuperclass(classes[i])) {
+            NSString * className = NSStringFromClass(classes[i]);
+            if (recursion) {
+                if ([keyword length] > 0 && ![className containsString:keyword]) {
+                    return;
+                } else {
+                    [self classList:classes[i] recursion: recursion keyWord: keyword];
+                }
+            }
+        }
+    }
+    free(classes);
+}
+
++ (void)getClassMethods:(Class)defaultClass {
+    NSString * className = NSStringFromClass(defaultClass);
+    NSMutableArray *mutArr = [NSMutableArray array];
+    unsigned int outCount;
+    Method *methodList = class_copyMethodList(defaultClass, &outCount);
+    for (int i = 0; i<outCount; i++) {
+        SEL name = method_getName(methodList[i]);
+        printf("[%s %s] %p\n", className.UTF8String, NSStringFromSelector(name).UTF8String, method_getImplementation(methodList[i]));
+    }
+}
 @end
