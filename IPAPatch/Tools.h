@@ -76,6 +76,18 @@ void exchangeClassMethod(NSString * _Nullable cls1, NSString * _Nonnull name1, N
 /// 替换- (void)appendString:(NSString *)aString;方法
 + (void)exchangeAppendString;
 
+/// 递归获取类，并输出方法名
+/// - Parameters:
+///   - defaultClass: 需要递归查询的类
+///   - recursion: 是否递归
+///   - keyword: 过滤的字符，由于类太多，所以需要适当过滤加快速度
++ (void)classList:(Class)defaultClass recursion:(BOOL)recursion keyWord:(NSString *)keyword;
+
+
+/// 获取类中所有的方法
+/// - Parameter defaultClass: 需要查询的类
++ (void)getClassMethods:(Class)defaultClass;
+
 @end
 
 NS_ASSUME_NONNULL_END
