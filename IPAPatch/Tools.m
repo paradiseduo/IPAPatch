@@ -305,12 +305,30 @@ void bgl_exchangeMethod(Class originalClass, SEL originalSel, Class replacedClas
 }
 
 + (void)getClassMethods:(Class)defaultClass {
-    NSString * className = NSStringFromClass(defaultClass);
-    unsigned int outCount;
-    Method *methodList = class_copyMethodList(defaultClass, &outCount);
-    for (int i = 0; i<outCount; i++) {
-        SEL name = method_getName(methodList[i]);
-        printf("[%s %s] %p\n", className.UTF8String, NSStringFromSelector(name).UTF8String, method_getImplementation(methodList[i]));
+    unsigned int count = 0;
+    Ivar *members = class_copyIvarList(defaultClass, &count);
+    for(int i = 0; i < count; i++) {
+        Ivar ivar = members[i];
+        const char *memberName = ivar_getName(ivar);
+        const char *memberType = ivar_getTypeEncoding(ivar);
+        printf("@property %s %s\n", memberType, memberName);
     }
+    free(members);
+    
+    NSString * className = NSStringFromClass(defaultClass);
+    Method *methodList = class_copyMethodList(defaultClass, &count);
+    for (int i = 0; i<count; i++) {
+        SEL name = method_getName(methodList[i]);
+        printf("-[%s %s] %p\n", className.UTF8String, NSStringFromSelector(name).UTF8String, method_getImplementation(methodList[i]));
+    }
+    free(methodList);
+    
+    Class metaClass = object_getClass(defaultClass);
+    Method *classMethods = class_copyMethodList(metaClass, &count);
+    for (int i = 0; i < count; i++) {
+        SEL name = method_getName(classMethods[i]);
+        printf("+[%s %s] %p\n", className.UTF8String, NSStringFromSelector(name).UTF8String, method_getImplementation(classMethods[i]));
+    }
+    free(classMethods);
 }
 @end
