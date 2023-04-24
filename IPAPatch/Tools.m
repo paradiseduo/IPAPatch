@@ -306,7 +306,6 @@ void bgl_exchangeMethod(Class originalClass, SEL originalSel, Class replacedClas
 
 + (void)getClassMethods:(Class)defaultClass {
     NSString * className = NSStringFromClass(defaultClass);
-    NSMutableArray *mutArr = [NSMutableArray array];
     unsigned int outCount;
     Method *methodList = class_copyMethodList(defaultClass, &outCount);
     for (int i = 0; i<outCount; i++) {
