@@ -294,7 +294,7 @@ void bgl_exchangeMethod(Class originalClass, SEL originalSel, Class replacedClas
             NSString * className = NSStringFromClass(classes[i]);
             if (recursion) {
                 if ([keyword length] > 0 && ![className containsString:keyword]) {
-                    return;
+                    continue;
                 } else {
                     [self classList:classes[i] recursion: recursion keyWord: keyword];
                 }
