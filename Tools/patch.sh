@@ -41,7 +41,7 @@ USE_ORIGINAL_ENTITLEMENTS=false
 TEMP_APP_PATH=""   # To be found in Step 1
 TARGET_APP_PATH="" # To be found in Step 3
 TARGET_APP_FRAMEWORKS_PATH="" # To be found in Step 5
-
+MOBILEPROVISION_PATH=""
 
 # ---------------------------------------------------
 # 0. Prepare Working Enviroment
@@ -57,6 +57,7 @@ IGNORE_UI_SUPPORTED_DEVICES=$(/usr/libexec/PlistBuddy -c "Print IGNORE_UI_SUPPOR
 REMOVE_WATCHPLACEHOLDER=$(/usr/libexec/PlistBuddy -c "Print REMOVE_WATCHPLACEHOLDER"  "${OPTIONS_PATH}")
 USE_ORIGINAL_ENTITLEMENTS=$(/usr/libexec/PlistBuddy -c "Print USE_ORIGINAL_ENTITLEMENTS"  "${OPTIONS_PATH}")
 USE_DOBBY=$(/usr/libexec/PlistBuddy -c "Print USE_DOBBY"  "${OPTIONS_PATH}")
+MOBILEPROVISION_PATH=$(/usr/libexec/PlistBuddy -c "Print MOBILEPROVISION_PATH"  "${OPTIONS_PATH}")
 
 echo "RESTORE_SYMBOLS: $RESTORE_SYMBOLS"
 echo "CREATE_IPA_FILE: $CREATE_IPA_FILE"
@@ -266,6 +267,12 @@ ENTITLEMENTS="$TEMP_PATH/entitlements.xcent"
 codesign -d --entitlements :- "$TARGET_APP_PATH" > "$ENTITLEMENTS"
 fi
 
+if [[ "$MOBILEPROVISION_PATH" != "" ]]; then
+EMBEDDED_PATH="$TARGET_APP_PATH/embedded.mobileprovision"
+cp -f "$MOBILEPROVISION_PATH" "$EMBEDDED_PATH"
+echo "copy $MOBILEPROVISION_PATH to $EMBEDDED_PATH"
+fi
+
 echo "Code Signing Dylibs"
 if [ "$USE_ORIGINAL_ENTITLEMENTS" = true ]; then
     /usr/bin/codesign --force --sign "$EXPANDED_CODE_SIGN_IDENTITY" --entitlements "$ENTITLEMENTS" "$TARGET_APP_PATH/Dylibs/"*
@@ -276,6 +283,24 @@ fi
 
 echo "Code Signing Frameworks"
 if [ -d "$TARGET_APP_FRAMEWORKS_PATH" ]; then
+    for framework in "$TARGET_APP_FRAMEWORKS_PATH"/*.framework; do
+        info_plist="$framework/Info.plist"
+        if [ -f "$info_plist" ]; then
+            bundle_identifier=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$info_plist" 2>/dev/null)
+            if [ $? -eq 0 ]; then
+                if [[ "$bundle_identifier" = "$TARGET_BUNDLE_ID" ]]; then
+                    echo "在 $framework 中找到了CFBundleIdentifier为$TARGET_BUNDLE_ID的Info.plist文件。"
+                    # 生成一个长度为6的随机字符串
+                    random_string=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 6 | head -n 1)
+                    new_bundle_identifier="${bundle_identifier}.${random_string}"
+                    # 修改Info.plist文件中的CFBundleIdentifier字段
+                    /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $new_bundle_identifier" "$info_plist"
+                    echo "已将 $framework 的CFBundleIdentifier修改为 $new_bundle_identifier"
+                fi
+            fi
+            
+        fi
+    done
     if [ "$USE_ORIGINAL_ENTITLEMENTS" = true ]; then
         /usr/bin/codesign --force --sign "$EXPANDED_CODE_SIGN_IDENTITY" --entitlements "$ENTITLEMENTS" "$TARGET_APP_FRAMEWORKS_PATH/"*
     else
